@@ -1,0 +1,6 @@
+[workspace]
+resolver = "2"
+members = [
+    "ports/mac",
+]
+exclude = [".cargo"]
