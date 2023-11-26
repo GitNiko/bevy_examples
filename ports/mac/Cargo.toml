@@ -16,3 +16,7 @@ bevy_rapier3d ={ workspace = true }
 bevy_mod_picking ={ workspace = true }
 bevy_transform_gizmo ={ workspace = true }
 bevy_hanabi ={ workspace = true }
+
+[[example]]
+name = "shader_animate_shader"
+path = "examples/shader/animate_shader.rs"

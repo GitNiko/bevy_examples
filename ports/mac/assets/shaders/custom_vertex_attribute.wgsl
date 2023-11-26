@@ -52,10 +52,18 @@ fn vertex(vertex: Vertex) -> VertexOutput {
 }
 
 struct FragmentInput {
+    @builtin(position) clip_position: vec4<f32>,
     @location(0) blend_color: vec4<f32>,
 };
 
 @fragment
 fn fragment(input: FragmentInput) -> @location(0) vec4<f32> {
-    return material.color * input.blend_color;
+    let speed = 2.0;
+    // The globals binding contains various global values like time
+    // which is the time since startup in seconds
+    let t_1 = sin(globals.time * speed * input.clip_position.x) * 0.5 + 0.5;
+    let t_2 = cos(globals.time * speed * input.clip_position.y);
+
+    return vec4<f32>(t_1, t_2, t_1, 1.0);
+    // return material.color * input.blend_color;
 }
