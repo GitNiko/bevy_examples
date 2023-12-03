@@ -20,3 +20,12 @@ bevy_hanabi ={ workspace = true }
 [[example]]
 name = "shader_animate_shader"
 path = "examples/shader/animate_shader.rs"
+
+[[example]]
+name = "shader_random_shader"
+path = "examples/shader/random_shader.rs"
+
+[lib]
+name = "mac"
+crate-type = ["rlib"]
+

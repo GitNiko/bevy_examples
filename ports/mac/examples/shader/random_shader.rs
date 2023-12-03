@@ -7,9 +7,11 @@ use bevy::{
     render::render_resource::*,
 };
 
+use mac::plugins::debug_camera::DebugCameraPlugin;
+
 fn main() {
     App::new()
-        .add_plugins(mac::plugins::debug_camera::DebugCameraPlugin)
+        .add_plugins(DebugCameraPlugin)
         .add_plugins((DefaultPlugins, MaterialPlugin::<CustomMaterial>::default()))
         .add_systems(Startup, setup)
         .run();
@@ -41,6 +43,6 @@ struct CustomMaterial {}
 
 impl Material for CustomMaterial {
     fn fragment_shader() -> ShaderRef {
-        "shaders/animate_shader.wgsl".into()
+        "shaders/random_shader.wgsl".into()
     }
 }
