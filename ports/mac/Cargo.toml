@@ -25,6 +25,15 @@ path = "examples/shader/animate_shader.rs"
 name = "shader_random_shader"
 path = "examples/shader/random_shader.rs"
 
+[[example]]
+name = "shader_noise"
+path = "examples/shader/noise.rs"
+
+[[example]]
+name = "shader_board"
+path = "examples/shader/board.rs"
+
+
 [lib]
 name = "mac"
 crate-type = ["rlib"]
