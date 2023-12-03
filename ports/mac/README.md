@@ -1,2 +1,2 @@
 # todo
-- UI系统确认
+- features: `DebugCamera` should be able to be keep in sync with `Camera` (e.g. `Camera` is parent of `DebugCamera` and `DebugCamera` is always at the same position as `Camera`) if `Camera` exists.
