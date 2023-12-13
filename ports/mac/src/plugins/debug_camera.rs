@@ -1,7 +1,5 @@
 use bevy::prelude::*;
 
-use crate::utils::despawn_screen;
-
 /// debug camera
 pub struct DebugCameraPlugin;
 
@@ -9,36 +7,37 @@ pub struct DebugCameraPlugin;
 enum DebugCameraState {
     #[default]
     Off,
-    On
+    On,
 }
 
 impl Plugin for DebugCameraPlugin {
     fn build(&self, app: &mut App) {
-        app
-        .add_plugins(bevy_debug_camera::DebugCameraPlugin::default())
-        .add_state::<DebugCameraState>()
-        .add_systems(Startup, despawn_screen::<bevy_debug_camera::DebugCamera>)
-        .add_systems(OnEnter(DebugCameraState::On), setup)
-        .add_systems(Update, control_system)
-        .add_systems(OnExit(DebugCameraState::On), despawn_screen::<bevy_debug_camera::DebugCamera>);
-    
-
+        app.add_plugins(bevy_debug_camera::DebugCameraPlugin::default())
+            .add_state::<DebugCameraState>()
+            .add_systems(OnEnter(DebugCameraState::On), setup)
+            .add_systems(Update, control_system)
+            .add_systems(
+                OnExit(DebugCameraState::On),
+                despawn_debug_camera,
+            );
     }
 }
 
-fn setup(mut commands: Commands, query: Query<Entity, With<Camera>>) {
-    for entity in query.iter() {
+fn setup(mut commands: Commands, query: Query<(Entity, &Transform), With<Camera>>) {
+    for (entity, transform) in query.iter() {
         //  eqauls Camera3dBundle.looking_at(postion + fwd, up)
-        commands.entity(entity).insert(bevy_debug_camera::DebugCamera {
-            position: Vec3::new(0.7, 0.7, 1.0),
-            up: Vec3::Y,
-            fwd: Vec3::new(-0.7, -0.4, -1.0),
-            ..default()
-        });
+        let r = transform;
+        // translate to debug camera position
+        commands
+            .entity(entity)
+            .insert(bevy_debug_camera::DebugCamera {
+                position: r.translation,
+                up: r.rotation * Vec3::Y,
+                fwd: r.rotation * -Vec3::Z,
+                ..default()
+            });
     }
 }
-
-
 
 fn control_system(
     keyboard_input: Res<Input<KeyCode>>,
@@ -72,3 +71,9 @@ fn control_system(
     }
 }
 
+fn despawn_debug_camera(mut commands: Commands, query: Query<Entity, With<bevy_debug_camera::DebugCamera>>) {
+    for entity in query.iter() {
+        println!("despawn_debug_camera: {:?}", entity.type_name());
+        commands.entity(entity).remove::<bevy_debug_camera::DebugCamera>();
+    }
+}
