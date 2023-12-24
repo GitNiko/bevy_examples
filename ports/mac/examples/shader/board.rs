@@ -7,6 +7,7 @@ use bevy::{
     render::render_resource::*,
 };
 
+use bevy_debug_camera::DebugCamera;
 use mac::plugins::{debug_camera::DebugCameraPlugin, coordinate::CoordinatePlugin};
 
 fn main() {
@@ -26,12 +27,14 @@ fn setup(
     commands.spawn(MaterialMeshBundle {
         mesh: meshes.add(Mesh::from(shape::Plane { size: 1.0, subdivisions: 3 })),
         material: materials.add(CustomMaterial {}),
-        ..default()
+        // rotate 90 degree
+        transform: Transform::from_rotation(Quat::from_rotation_y(std::f32::consts::FRAC_PI_2)),
+        ..Default::default()
     });
 
     // camera
     commands.spawn(Camera3dBundle {
-        transform: Transform::from_xyz(0.0, 2.5, 0.0).looking_at(Vec3::ZERO, Vec3::Y),
+        transform: Transform::from_xyz(0.0, 2.5, 0.0).looking_at(Vec3::ZERO, -Vec3::Y),
         ..default()
     });
 }
@@ -42,6 +45,6 @@ struct CustomMaterial {}
 
 impl Material for CustomMaterial {
     fn fragment_shader() -> ShaderRef {
-        "shaders/noise.wgsl".into()
+        "shaders/linear.wgsl".into()
     }
 }
