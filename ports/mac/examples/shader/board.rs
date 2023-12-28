@@ -4,17 +4,19 @@
 use bevy::{
     prelude::*,
     reflect::{TypePath, TypeUuid},
-    render::render_resource::*,
+    render::{render_resource::*, texture},
 };
 
 use bevy_debug_camera::DebugCamera;
-use mac::plugins::{debug_camera::DebugCameraPlugin, coordinate::CoordinatePlugin};
+use bevy_inspector_egui::quick::WorldInspectorPlugin;
+use mac::plugins::{coordinate::CoordinatePlugin, debug_camera::DebugCameraPlugin};
 
 fn main() {
     App::new()
-        .add_plugins(DebugCameraPlugin)
         .add_plugins(CoordinatePlugin)
         .add_plugins((DefaultPlugins, MaterialPlugin::<CustomMaterial>::default()))
+        .add_plugins(WorldInspectorPlugin::new())
+        .add_plugins(DebugCameraPlugin)
         .add_systems(Startup, setup)
         .run();
 }
@@ -25,10 +27,13 @@ fn setup(
     mut materials: ResMut<Assets<CustomMaterial>>,
 ) {
     commands.spawn(MaterialMeshBundle {
-        mesh: meshes.add(Mesh::from(shape::Plane { size: 1.0, subdivisions: 3 })),
+        mesh: meshes.add(Mesh::from(shape::Plane {
+            size: 1.0,
+            subdivisions: 1,
+        })),
         material: materials.add(CustomMaterial {}),
         // rotate 90 degree
-        transform: Transform::from_rotation(Quat::from_rotation_y(std::f32::consts::FRAC_PI_2)),
+        transform: Transform::from_rotation(Quat::from_rotation_y(-std::f32::consts::FRAC_PI_2)),
         ..Default::default()
     });
 

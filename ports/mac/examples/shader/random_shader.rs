@@ -7,12 +7,14 @@ use bevy::{
     render::render_resource::*,
 };
 
+use bevy_inspector_egui::quick::WorldInspectorPlugin;
 use mac::plugins::debug_camera::DebugCameraPlugin;
 
 fn main() {
     App::new()
-        .add_plugins(DebugCameraPlugin)
         .add_plugins((DefaultPlugins, MaterialPlugin::<CustomMaterial>::default()))
+        .add_plugins(WorldInspectorPlugin::new())
+        .add_plugins(DebugCameraPlugin)
         .add_systems(Startup, setup)
         .run();
 }

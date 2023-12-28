@@ -9,8 +9,8 @@ use bevy::{
 
 fn main() {
     App::new()
-        .add_plugins(mac::plugins::debug_camera::DebugCameraPlugin)
         .add_plugins((DefaultPlugins, MaterialPlugin::<CustomMaterial>::default()))
+        .add_plugins(mac::plugins::debug_camera::DebugCameraPlugin)
         .add_systems(Startup, setup)
         .run();
 }

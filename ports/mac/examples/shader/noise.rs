@@ -11,8 +11,8 @@ use mac::plugins::debug_camera::DebugCameraPlugin;
 
 fn main() {
     App::new()
-        .add_plugins(DebugCameraPlugin)
         .add_plugins((DefaultPlugins, MaterialPlugin::<CustomMaterial>::default()))
+        .add_plugins(DebugCameraPlugin)
         .add_systems(Startup, setup)
         .run();
 }
